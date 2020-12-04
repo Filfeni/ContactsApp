@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ContactApp.Views;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -9,8 +10,8 @@ namespace ContactApp
         public App()
         {
             InitializeComponent();
+            MainPage = new NavigationPage(new HomePage());
 
-            MainPage = new MainPage();
         }
 
         protected override void OnStart()
