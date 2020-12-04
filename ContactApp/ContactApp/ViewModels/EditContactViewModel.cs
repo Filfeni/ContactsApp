@@ -1,5 +1,4 @@
 ﻿using ContactApp.Models;
-using ContactApp.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,32 +8,26 @@ using Xamarin.Forms;
 
 namespace ContactApp.ViewModels
 {
-    public class NewContactViewModel : BaseViewModel
+    public class EditContactViewModel
     {
         public ObservableCollection<Contact> ContactList { get; set; }
         public Contact NewContact { get; set; }
-        public ICommand AddContactCommand { get; }
         public ICommand EditContactCommand { get; }
         public int IndexSelected { get; }
-        
 
-        public NewContactViewModel(ObservableCollection<Contact> contactList)
+        public EditContactViewModel(ObservableCollection<Contact> contactList, int indexSelected)
         {
-            NewContact = new Contact();
+            IndexSelected = indexSelected;
             ContactList = contactList;
-            AddContactCommand = new Command(AddContact);
+            NewContact = contactList[indexSelected];
+            EditContactCommand = new Command(EditContact);
         }
-        
 
-        public async void AddContact()
+        public async void EditContact()
         {
-            ContactList.Add(NewContact);
+            ContactList[IndexSelected] = NewContact;
             App.Current.MainPage.Navigation.NavigationStack[0].BindingContext = new HomeViewModel(ContactList);
             await App.Current.MainPage.Navigation.PopAsync();
-            
         }
-        
-
-
     }
 }
