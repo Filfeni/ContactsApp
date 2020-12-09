@@ -8,13 +8,13 @@
         <ToolbarItem Order="Primary" Text="Add" Command="{Binding AddButtonCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ListView Style="{StaticResource ItemsStyle}" ItemsSource="{Binding ContactList}" SelectedItem="{Binding SelectedContact}">
+        <ListView Style="{StaticResource ItemsStyle}" ItemsSource="{Binding ContactList}" SelectedItem="{Binding SelectedContact}" SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <ViewCell.ContextActions>
-                            <MenuItem Text="More" Command="{Binding BindingContext.MoreButtonCommand, Source={x:Reference homePage}}"></MenuItem>
-                            <MenuItem Text="Remove" Command="{Binding BindingContext.RemoveButtonCommand, Source={x:Reference homePage}}" IsDestructive="True"></MenuItem>
+                            <MenuItem Text="More" Command="{Binding BindingContext.MoreButtonCommand, Source={x:Reference homePage}}" CommandParameter="{Binding}"></MenuItem>
+                            <MenuItem Text="Remove" Command="{Binding BindingContext.RemoveButtonCommand, Source={x:Reference homePage}}" CommandParameter="{Binding}" IsDestructive="True"></MenuItem>
                         </ViewCell.ContextActions>
                         <StackLayout Style="{StaticResource StackLayoutStyle}">
                             <Label Style="{StaticResource PrimaryLabel}" Text="{Binding FullName}"></Label>

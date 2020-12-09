@@ -20,10 +20,10 @@ namespace ContactApp.ViewModels
             IndexSelected = indexSelected;
             ContactList = contactList;
             NewContact = contactList[indexSelected];
-            EditContactCommand = new Command(EditContact);
+            EditContactCommand = new Command<Contact>(EditContact);
         }
 
-        public async void EditContact()
+        public async void EditContact(Contact contact)
         {
             ContactList[IndexSelected] = NewContact;
             App.Current.MainPage.Navigation.NavigationStack[0].BindingContext = new HomeViewModel(ContactList);

@@ -24,15 +24,15 @@ namespace ContactApp.ViewModels
         {
             ContactList = new ObservableCollection<Contact>();
             AddButtonCommand = new Command(GoToNewContactPage);
-            RemoveButtonCommand = new Command(RemoveContact);
-            MoreButtonCommand = new Command(MoreOptions);
+            RemoveButtonCommand = new Command<Contact>(RemoveContact);
+            MoreButtonCommand = new Command<Contact>(MoreOptions);
         }
         public HomeViewModel(ObservableCollection<Contact> contactList)
         {
             ContactList = contactList;
             AddButtonCommand = new Command(GoToNewContactPage);
-            RemoveButtonCommand = new Command(RemoveContact);
-            MoreButtonCommand = new Command(MoreOptions);
+            RemoveButtonCommand = new Command<Contact>(RemoveContact);
+            MoreButtonCommand = new Command<Contact>(MoreOptions);
         }
 
         public async void GoToNewContactPage()
@@ -40,20 +40,20 @@ namespace ContactApp.ViewModels
             await App.Current.MainPage.Navigation.PushAsync(new NewContactPage(ContactList));
         }
 
-        public async void MoreOptions()
+        public async void MoreOptions(Contact contact)
         {
-            string result = await App.Current.MainPage.DisplayActionSheet(null, "Cancel", null, new string[] { $"Call +1 {SelectedContact.PhoneNumber}", "Edit" });
+            string result = await App.Current.MainPage.DisplayActionSheet(null, "Cancel", null, new string[] { $"Call +1 {contact.PhoneNumber}", "Edit" });
             
             bool? option = result == null || result == "Cancel" ? (bool?)null 
-                : (result == $"Call +1 {SelectedContact.PhoneNumber}" ? true : false);
+                : (result == $"Call +1 {contact.PhoneNumber}" ? true : false);
             
             switch (option)
             {
                 case true:
-                    PhoneDialer.Open($"+1{ SelectedContact.PhoneNumber}");
+                    PhoneDialer.Open($"+1{ contact.PhoneNumber}");
                     break;
                 case false:
-                    int index = ContactList.IndexOf(SelectedContact);
+                    int index = ContactList.IndexOf(contact);
                     await App.Current.MainPage.Navigation.PushAsync(new EditContactPage(ContactList, index));
                     break;
                 default:
@@ -62,9 +62,9 @@ namespace ContactApp.ViewModels
 
         }
 
-        public void RemoveContact()
+        public void RemoveContact(Contact contact)
         {
-            ContactList.Remove(SelectedContact);
+            ContactList.Remove(contact);
         }
     }
 }
